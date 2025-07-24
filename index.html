@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Interactiva - Ingeniería Industrial</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fcecff;
+      color: #333;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #a855f7;
+    }
+    .semestre {
+      border-left: 6px solid #c084fc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 12px;
+    }
+    .semestre-1 { background-color: #f3d9ff; }
+    .semestre-2 { background-color: #e0bbff; }
+    .semestre-3 { background-color: #ffd1dc; }
+    .semestre-4 { background-color: #ffe5b4; }
+    .semestre-5 { background-color: #d0f0fd; }
+    .semestre-6 { background-color: #ccffe6; }
+    .semestre-7 { background-color: #e0e7ff; }
+    .semestre-8 { background-color: #ffe4f0; }
+    .semestre-9 { background-color: #eaffd0; }
+    .semestre-10 { background-color: #f0f0ff; }
+
+    .materia {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      margin: 5px 0;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .materia:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    .materia.aprobada {
+      text-decoration: line-through;
+      background-color: #e5e5e5;
+      color: #888;
+    }
+    .creditos {
+      font-weight: bold;
+    }
+    #contador {
+      font-size: 18px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #e9d5ff;
+      border-left: 5px solid #c084fc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla de Ingeniería Industrial</h1>
+  <div id="contador">Créditos aprobados: 0</div>
+
+  <div id="malla"></div>
+
+  <script>
+    const materias = [
+      { nombre: "Cálculo diferencial", creditos: 4, semestre: 1, aprobada: true },
+      { nombre: "Sociología", creditos: 3, semestre: 1, aprobada: true },
+      { nombre: "Introducción a la ingeniería industrial", creditos: 3, semestre: 1, aprobada: true },
+      { nombre: "Programación de computadores", creditos: 3, semestre: 1, aprobada: true },
+      { nombre: "Álgebra lineal", creditos: 4, semestre: 2, aprobada: true },
+      { nombre: "Taller de invención y creatividad", creditos: 3, semestre: 2, aprobada: true },
+      { nombre: "Programación orientada a objetos", creditos: 3, semestre: 2, aprobada: true },
+      { nombre: "Fundamentos de mecánica", creditos: 4, semestre: 3, aprobada: true },
+      { nombre: "Economía general", creditos: 3, semestre: 3, aprobada: true },
+      { nombre: "Gestión empresarial", creditos: 3, semestre: 4, aprobada: true },
+
+      { nombre: "Cálculo integral", creditos: 4, semestre: 4 },
+      { nombre: "Taller de herramientas y problemas en ingeniería industrial", creditos: 3, semestre: 4 },
+      { nombre: "Taller de ciencia y tecnología de materiales", creditos: 4, semestre: 4 },
+
+      { nombre: "Fundamentos de electricidad y magnetismo", creditos: 4, semestre: 5 },
+      { nombre: "Probabilidad fundamental", creditos: 4, semestre: 5 },
+      { nombre: "Cálculo en varias variables", creditos: 4, semestre: 5 },
+      { nombre: "Ecuaciones diferenciales", creditos: 4, semestre: 5 },
+      { nombre: "Sistemas de costos", creditos: 4, semestre: 5 },
+
+      { nombre: "Inferencia estadística fundamental", creditos: 4, semestre: 6 },
+      { nombre: "Optimización", creditos: 3, semestre: 6 },
+      { nombre: "Ingeniería económica", creditos: 3, semestre: 6 },
+      { nombre: "Taller de procesos químicos y biotecnológicos", creditos: 3, semestre: 6 },
+      { nombre: "Modelos y simulación", creditos: 3, semestre: 6 },
+
+      { nombre: "Modelos estocásticos", creditos: 3, semestre: 7 },
+      { nombre: "Finanzas", creditos: 3, semestre: 7 },
+      { nombre: "Taller de ergonomía", creditos: 4, semestre: 7 },
+      { nombre: "Control y gestión de calidad", creditos: 3, semestre: 7 },
+      { nombre: "Gerencia y gestión de proyectos", creditos: 3, semestre: 7 },
+
+      { nombre: "Taller de simulación de procesos", creditos: 3, semestre: 8 },
+      { nombre: "Taller de ingeniería de la producción", creditos: 4, semestre: 8 },
+      { nombre: "Sistemas de información", creditos: 3, semestre: 8 },
+      { nombre: "Seguridad industrial", creditos: 3, semestre: 8 },
+      { nombre: "Taller de metodología de la información", creditos: 3, semestre: 8 },
+
+      { nombre: "Logística", creditos: 3, semestre: 9 },
+      { nombre: "Gestión tecnológica", creditos: 3, semestre: 9 },
+      { nombre: "Gerencia de recursos humanos", creditos: 3, semestre: 9 },
+      { nombre: "Taller de diseño de plantas", creditos: 4, semestre: 9 },
+      { nombre: "Electiva 1", creditos: 4, semestre: 9 },
+
+      { nombre: "Trabajo de grado", creditos: 4, semestre: 10 },
+      { nombre: "Electiva 2", creditos: 4, semestre: 10 },
+      { nombre: "Electiva 3", creditos: 4, semestre: 10 },
+      { nombre: "Electiva 4", creditos: 3, semestre: 10 },
+    ];
+
+    const mallaDiv = document.getElementById("malla");
+
+    const materiasPorSemestre = {};
+    materias.forEach((m) => {
+      if (!materiasPorSemestre[m.semestre]) materiasPorSemestre[m.semestre] = [];
+      materiasPorSemestre[m.semestre].push(m);
+    });
+
+    let totalCreditos = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      const sem = document.createElement("div");
+      sem.className = `semestre semestre-${i}`;
+      sem.innerHTML = `<h2>${i}° Semestre</h2>`;
+      (materiasPorSemestre[i] || []).forEach((m) => {
+        const mat = document.createElement("div");
+        mat.className = "materia" + (m.aprobada ? " aprobada" : "");
+        mat.innerHTML = `<span>${m.nombre}</span> <span class='creditos'>${m.creditos} créditos</span>`;
+
+        if (m.aprobada) totalCreditos += m.creditos;
+
+        mat.addEventListener("click", () => {
+          mat.classList.toggle("aprobada");
+          m.aprobada = !m.aprobada;
+          actualizarContador();
+          guardarEstado();
+        });
+        sem.appendChild(mat);
+      });
+      mallaDiv.appendChild(sem);
+    }
+
+    function actualizarContador() {
+      const total = materias.reduce((sum, m) => m.aprobada ? sum + m.creditos : sum, 0);
+      document.getElementById("contador").innerText = `Créditos aprobados: ${total}`;
+    }
+
+    function guardarEstado() {
+      const estado = materias.map(m => m.aprobada);
+      localStorage.setItem("estadoMaterias", JSON.stringify(estado));
+    }
+
+    function cargarEstado() {
+      const estado = JSON.parse(localStorage.getItem("estadoMaterias") || "[]");
+      estado.forEach((val, idx) => {
+        materias[idx].aprobada = val;
+      });
+    }
+
+    cargarEstado();
+    actualizarContador();
+  </script>
+</body>
+</html>
